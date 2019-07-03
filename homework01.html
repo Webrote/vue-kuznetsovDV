@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<title>Home work 01</title>
+	
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+
+	<div class="container">
+		<div id="app">
+			<h3>Всего пользователей: {{ usersTotal }}</h3>
+			
+			<button 
+				class="btn btn-primary"
+				data-text="Показать список"
+				v-on:click="showList($event)"
+			>
+				Скрыть список
+			</button>
+			<br>
+			<br>
+
+			<table class="table table-bordered">
+				<tr>
+					<td><strong>ID</strong></td>
+					<td><strong>Аватар</strong></td>
+					<td><strong>Фамилия</strong></td>
+					<td><strong>Имя</strong></td>
+					<td><strong>Отчество</strong></td>
+				</tr>
+				<tr v-for="(record,index) in users" v-bind:key="record.id" v-show="showUsers">
+					<td> {{ record.id }} </td>
+					<td>
+						<span v-if="record.avatar">
+							<img v-bind:src="record.avatar" alt="">
+						</span>
+						<span v-else>Без аватара</span>
+					</td>
+					<td> {{ record.secondName | toUpper }} </td>
+					<td> {{ record.firstName }} </td>
+					<td> {{ record.patronymic }} </td>
+				</tr>
+			</table>
+		</div>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+	<script>
+
+		var app = new Vue({
+			el: '#app',
+			data: {
+				message: 'New vue instance',
+				users: [
+					{
+						id: 0,
+						firstName: 'Вини',
+						secondName: 'Пух',
+						patronymic: 'Бурович',
+						avatar: 'http://1avatara.ru/pic/star/star00001.png'
+					},
+					{
+						id: 1,
+						firstName: 'Фрося',
+						secondName: 'Петухова',
+						patronymic: 'Венедиктовна',
+						avatar: ''
+					},
+					{
+						id: 2,
+						firstName: 'Кай',
+						secondName: 'Метов',
+						patronymic: 'Зигизмундович',
+						avatar: 'http://1avatara.ru/pic/star/star00015.jpg'
+					},
+					{
+						id: 3,
+						firstName: 'Гадя',
+						secondName: 'Хренова',
+						patronymic: 'Петрович',
+						avatar: 'http://1avatara.ru/pic/star/star00014.jpg'
+					},
+					{
+						id: 4,
+						firstName: 'Амаяк',
+						secondName: 'Акопян',
+						patronymic: 'Арутюнович'
+					}
+				],
+				showUsers: true,
+			},
+			filters: {
+				toUpper(value) {
+					return value.toUpperCase();
+				}
+			},
+			methods: {
+				showList(e) {
+					let text = e.target.innerHTML;
+					e.target.innerHTML = e.target.dataset.text;
+					e.target.dataset.text = text;
+					this.showUsers = !this.showUsers;
+				}
+			},
+			computed: {
+				usersTotal() {
+					return this.users.length;
+				}
+			}
+		})
+	</script>
+	
+</body>
+</html>
